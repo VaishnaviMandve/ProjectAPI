@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Tracking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        .status {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Product Tracking System</h1>
+
+    <ul>
+        <li>
+            Product ID: <span id="productId"></span>
+        </li>
+        <li>
+            Current Status: <span id="currentStatus" class="status"></span>
+        </li>
+        <li>
+            <button onclick="updateStatus('Picked')">Mark as Picked</button>
+            <button onclick="updateStatus('Delivered')">Mark as Delivered</button>
+            <button onclick="updateStatus('Returned')">Mark as Returned</button>
+            <button onclick="updateStatus('Exception')">Mark as Exception</button>
+        </li>
+    </ul>
+
+    <script>
+        // Fetch data from the API
+        fetch('http://localhost:5000/api/product/ZYW8827')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('productId').innerText = data.product_id;
+                document.getElementById('currentStatus').innerText = data.status;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        // Update status function
+        function updateStatus(status) {
+            // Assuming you have an API endpoint to update the status
+            fetch('http://localhost:5000/api/product/123456/status', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ status: status }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('currentStatus').innerText = data.status;
+            })
+            .catch(error => console.error('Error updating status:', error));
+        }
+    </script>
+
+</body>
+</html>
